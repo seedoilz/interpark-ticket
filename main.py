@@ -55,7 +55,7 @@ main_url = "https://www.globalinterpark.com/main/main"
 login_url = "https://www.globalinterpark.com/user/signin?redirectUrl=aHR0cDovL3d3dy5nbG9iYWxpbnRlcnBhcmsuY29tL21haW4vbWFpbg=="
 # 抢购地址
 #target_url = "https://www.globalinterpark.com/detail/edetail?prdNo=23008837&dispNo=01011"
-target_url = "https://www.globalinterpark.com/detail/edetail?prdNo=23011124&dispNo=01003"
+target_url = "https://www.globalinterpark.com/detail/edetail?prdNo=23011669&dispNo=01003"
 # 登录 打开抢购页面
 def Login():
     # 输入账号 账号输入框：#memEmail
@@ -293,41 +293,41 @@ def ChooseSeat():
             while True:
                 try:
                     chooseSeatCount = chooseSeatCount + 1
-                    # 定位 td 元素
-                    td_element = driver.find_element(By.XPATH, f'//*[@id="TmgsTable"]/tbody/tr/td')
-                    # 在 td 元素下定位第一个 img 元素
-                    img_elements = td_element.find_elements(By.CSS_SELECTOR, "img")
-                    # element = driver.find_element(By.XPATH, f'//*[@id="TmgsTable"]/tbody/tr/td/map/area[{n}]')
-                    img_elements[1].click()
-                    # driver.execute_script("arguments[0].click();", first_img_element)
+                    driver.switch_to.parent_frame()
+                    driver.switch_to.frame('ifrmSeat')
+                    # //*[@id="GradeRow"]/td[1]/div/span[2]
+                    driver.find_elements(By.XPATH, '//*[@id="GradeRow"]/td[1]/div/span[2]')[1].click()
+                    elements = driver.find_elements(By.XPATH, '//*[@id="GradeDetail"]/div/ul/li[1]/a')
+                    # //*[@id="GradeDetail"]/div/ul/li[1]/a
+                    elements[0].click()
+                    # driver.execute_script("arguments[0].click();", element)
                 except:
                     time.sleep(0.5)
                     continue
                 break
-            i += 1
-            m += 1
 
+            logging.info(f'进入了：{y}区')
+            try:
+                driver.switch_to.frame('ifrmSeatDetail')
+                elements = driver.find_elements(By.XPATH,
+                                                '//*[@id="Seats"]')
 
-    #         logging.info(f'进入了：{y}区')
-    #         try:
-    #             elements = driver.find_elements(By.XPATH, "//*[@id='TmgsTable']/tbody/tr/td/span[not(@class='SeatR' or @class='SeatT or @class='SeatB') and @class!='']")
-    #
-    #             elements[0].click()
-    #             # driver.find_elements(By.ID, 'Seats')[i].click()
-    #             i += 1
-    #             m += 1
-    #         except:
-    #             logging.info(f'{y}区无票 正在刷新')
-    #             # logging.info("###无票 正在刷新###")
-    #             driver.refresh()
-    #             x += 1
-    #             if x >= len(list_order):
-    #                 x = 0
-    #             # Alert()
-    #             Date(1)
-    #             return
+                elements[0].click()
+                # driver.find_elements(By.ID, 'Seats')[i].click()
+                i += 1
+                m += 1
+            except:
+                logging.info(f'{y}区无票 正在刷新')
+                # logging.info("###无票 正在刷新###")
+                driver.refresh()
+                x += 1
+                if x >= len(list_order):
+                    x = 0
+                # Alert()
+                Date(1)
+                return
     # # 下一步
-    # logging.error(f'{y}区找到了！！')
+    logging.error(f'{y}区找到了！！')
     while True:
         try:
             driver.switch_to.parent_frame()
